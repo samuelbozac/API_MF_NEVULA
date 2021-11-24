@@ -23,9 +23,9 @@ def api_all():
 {(('0') * (5 - len(c_entera))) + c_entera}{c_decimal + (('0') * (3 - len(c_decimal)))}{producto}")
     principal = Principal()
     principal.reconocer_puerto()
-    factura_n = principal.printer.GetXReport()._numberOfLastInvoice
     principal.abrir_puerto()
-    principal.factura(codigos)
+    factura_n = principal.printer.GetXReport()._numberOfLastInvoice
+    # principal.factura(codigos)
     return jsonify({'factura_n':factura_n})
 @app.route("/api/prueba", methods =['POST'])
 def return_string():

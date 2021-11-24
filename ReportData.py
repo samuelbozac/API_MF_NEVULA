@@ -37,13 +37,14 @@ class ReportData(object):
   _additionalRateTaxDevolution = 0
 
   def __init__(self, trama):
+    print(f"Trama: {trama}")
     if (trama != None):
+      print(f"Len Trama: {len(trama)}")
       if (len(trama) > 100):
         try:
           _arrayParameter=str(trama[1:-1]).split(chr(0X0A))#(0X0A))
-          print(f"Array Parameter: {_arrayParameter}")
           if (len(_arrayParameter) == 31):
-            
+            print(f"Array Parameter: {_arrayParameter}")
             self._numberOfLastZReport = int(_arrayParameter[0])
             _hr = _arrayParameter[2][0:2]
             _mn = _arrayParameter[2][2:4]            
@@ -92,7 +93,6 @@ class ReportData(object):
             self._additionalRateTaxDevolution = Util().DoValueDouble(_arrayParameter[29])
 
           if (len(_arrayParameter) == 21): #(PP1F3,HSP7000,OKI,SRP350,TALLY1125,SRP270)
-
             self._numberOfLastZReport = int(_arrayParameter[0])
             _dd = _arrayParameter[1][4:6]
             _mm = _arrayParameter[1][2:4]

@@ -13,7 +13,7 @@ class Principal():
 		self.factura = self.factura
 		self.abrir_puerto = self.abrir_puerto
 		self.reconocer_puerto = self.reconocer_puerto
-		self.puerto = ['COM3']
+		self.puerto = ['COM11']
 	
 	def abrir_puerto(self):
 		puerto = self.puerto[0]

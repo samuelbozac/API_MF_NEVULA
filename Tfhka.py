@@ -23,7 +23,7 @@ import os
 
 
 class port:
-  portName = "COM3" #Changed by p
+  portName = "COM11" #Changed by p
   baudRate =9600
   dataBits =serial.EIGHTBITS
   stopBits =serial.STOPBITS_ONE
@@ -90,6 +90,7 @@ class tf_ve_ifpython:
         self.ser.flushOutput()
         if self._HandleCTSRTS():
           msj=self._AssembleQueryToSend(cmd)
+          print("Msj: {}".format(msj))
           self._write(msj)
           rt=self._read(1)
           if rt==chr(0x06):
@@ -234,12 +235,12 @@ class tf_ve_ifpython:
       return trama
 
   def _States_Report(self, cmd, r):
-    #print( cmd)
+    print( cmd)
     ret = r
     self._QueryCmd(cmd)
     while True:
       trama=self._FetchRow_Report(ret)
-      #print( "La trama es", trama, "hasta aca")
+      print( "La trama es", trama, "hasta aca")
       if trama==None:
         break
       return trama
