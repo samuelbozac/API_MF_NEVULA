@@ -1,6 +1,7 @@
 import flask
 from flask import request, jsonify
 from impresora import Principal
+import serial
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -21,11 +22,9 @@ def api_all():
     tipo_doc = data_cliente.get("document").get("documentType")
     for x in items:
         excento = x.get("exempt")
-        print(excento)
         precio = str(x.get('price'))
         p_entero, p_decimal = precio.split('.')
         cantidad = str(float(x.get('amount')))
-        print(cantidad)
         c_entera, c_decimal = cantidad.split('.')
         producto = x.get('name')
         codigos.append(f"{estados.get('e') if excento == True else estados.get('g')}{(('0') * (8 - len(p_entero))) + p_entero}{p_decimal + (('0') * (2 - len(p_decimal)))}\
@@ -33,9 +32,12 @@ def api_all():
     principal = Principal()
     principal.reconocer_puerto()
     principal.abrir_puerto()
-    # factura_n = principal.printer.GetXReport()._numberOfLastInvoice
     principal.factura(codigos, nombre_cliente, direccion, "-".join([tipo_doc, documento]))
-    return jsonify({'factura_n':True})
+    principal.cerrar_puerto()
+    principal.abrir_puerto()
+    factura_n = principal.printer.N_Factura()
+    principal.cerrar_puerto()
+    return jsonify({'factura_n':factura_n})
 @app.route("/api/prueba", methods =['POST'])
 def return_string():
     return jsonify("Prueba superada")

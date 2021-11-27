@@ -2,6 +2,7 @@ from datetime import (timedelta, datetime as pyDateTime, date as pyDate, time as
 
 import sys
 import Tfhka
+# import pyserial.serial as 
 import serial
 import os
 import time
@@ -37,12 +38,11 @@ class Principal():
 		return response 
 
 	def cerrar_puerto(self):
-		self.txt_informacion.setText("")
 		resp = self.printer.CloseFpctrl()
 		if not resp:
-			self.txt_informacion.setText("Impresora Desconectada")
+			print("Impresora Desconectada")
 		else:
-			self.txt_informacion.setText("Error")
+			print("Error")
 
 	def programacion(self):	
 		self.printer.SendCmd("D")
@@ -229,7 +229,7 @@ class Principal():
 		# self.printer.SendCmd(str('"' + "000000070000001000Tax Rate 2/ Producto Tasa Reducida"))
 		# self.printer.SendCmd(str("#000000090000001000Tax Rate 3/ Producto Tasa Adicional"))
 		self.printer.SendCmd(str("3"))
-		self.printer.SendCmd(str("101"))
+		self.printer.SendCmd(str("102TRANSFERENCIA")) # Tipo de pago
 
 	def facturaper(self):
 		#Factura Personalizada

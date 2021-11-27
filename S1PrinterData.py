@@ -22,6 +22,7 @@ class S1PrinterData(object):
 
   def __init__(self, trama):
     if(trama!=None):
+      print(f"Trama: {trama}")
       if (len(trama)>100): # and len(trama)<116): #116
         try:
           _arrayParameter=str(trama[1:-1]).split(chr(0X0A))

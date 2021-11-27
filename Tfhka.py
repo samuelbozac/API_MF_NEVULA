@@ -12,6 +12,7 @@ from S8EPrinterData import S8EPrinterData
 from S8PPrinterData import S8PPrinterData
 from AcumuladosX import AcumuladosX
 
+# import pyserial.serial as serial
 import serial
 import operator
 import time
@@ -90,7 +91,6 @@ class tf_ve_ifpython:
         self.ser.flushOutput()
         if self._HandleCTSRTS():
           msj=self._AssembleQueryToSend(cmd)
-          print("Msj: {}".format(msj))
           self._write(msj)
           rt=self._read(1)
           if rt==chr(0x06):
@@ -132,18 +132,25 @@ class tf_ve_ifpython:
          rt=False
       return rt
 
-  def _FetchRow(self):
+  def _FetchRow(self, n_factura = False):
     while True:
       time.sleep(1)
       bytes = self.ser.inWaiting()
+      print(f"Bytes {bytes}")
       if bytes>1:
         msj=self._read(bytes)
+        print(f"Msj: {msj}")
         linea=msj[1:-1]
+        print(f"Linea: {linea}")
         lrc=chr(self._Lrc(linea))
+        print(f"Lrc: {lrc}")
+        print(f"Msj[-1]: {msj[-1]}")
         if lrc==msj[-1]:
           self.ser.flushInput()
           self.ser.flushOutput()
           return msj
+        elif n_factura:
+          return linea
         else:
           break
       else:
@@ -199,6 +206,7 @@ class tf_ve_ifpython:
   def _AssembleQueryToSend(self,linea):
     lrc = self._Lrc(linea+chr(0x03))
     previo=chr(0x02)+linea+chr(0x03)+chr(lrc)
+    print(f"Previo: {previo}")
     return previo
 
   def _Lrc(self,linea):
@@ -224,11 +232,11 @@ class tf_ve_ifpython:
 
     return linea+adic
 
-  def _States(self, cmd):
+  def _States(self, cmd, n_factura = False):
     #print( cmd)
-    self._QueryCmd(cmd)
+    print(f"QueryCmd: {self._QueryCmd(cmd)}")
     while True:
-      trama=self._FetchRow()
+      trama=self._FetchRow(n_factura=n_factura)
       #print( "La trama es", trama, "hasta aca")
       if trama==None:
         break
@@ -435,8 +443,15 @@ class tf_ve_ifpython:
 
 
 class Tfhka(tf_ve_ifpython):
+  def N_Factura(self):
+    self.trama=self._States("S1", n_factura=True)
+    print(self.trama)
+    n_factura = self.trama.decode()
+    return n_factura.split("\n")[2]
+    
   def GetS1PrinterData(self):
     self.trama=self._States("S1")
+    print(self.trama)
     self.S1PrinterData = S1PrinterData(self.trama)
     #print( self.S1PrinterData)
     return self.S1PrinterData
@@ -491,7 +506,7 @@ class Tfhka(tf_ve_ifpython):
   
   def GetXReport(self):
     self.trama=self._UploadDataReport("U0X")
-    #print( self.trama)
+    # print( self.trama)
     self.XReport=ReportData(self.trama)
     return self.XReport
 
