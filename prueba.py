@@ -2,8 +2,9 @@ from operator import attrgetter
 import flask
 from flask import request, jsonify
 from impresora import Principal
-import serial
+from flask_cors import CORS
 app = flask.Flask(__name__)
+CORS(app)
 app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET'])
@@ -19,8 +20,9 @@ def api_all():
     data_cliente = data.get("invoice").get("client")
     nombre_cliente = f"{data_cliente.get('name')} {data_cliente.get('surname')}"
     direccion = data_cliente.get("address")
-    documento = data_cliente.get("document").get("document")
+    documento_cliente = data_cliente.get("document").get("document")
     tipo_doc = data_cliente.get("document").get("documentType")
+    telefono_cliente = data_cliente.get("phone")
     for x in items:
         excento = x.get("exempt")
         precio = str(x.get('price'))
@@ -34,17 +36,17 @@ def api_all():
         principal = Principal()
         principal.reconocer_puerto()
         principal.abrir_puerto()
-        principal.factura(codigos, nombre_cliente, direccion, "-".join([tipo_doc, documento]))
+        principal.factura(lista_productos = codigos, cliente = nombre_cliente, \
+            direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente)
         principal.cerrar_puerto()
         principal.abrir_puerto()
         factura_n = principal.printer.N_Factura()
         principal.cerrar_puerto()
         return jsonify({'invoice_number': factura_n})
-    except AttributeError as e:
-        print(e)
+    except AttributeError:
         return jsonify({"Error": "Impresora no conectada"})
 @app.route("/api/prueba", methods =['POST'])
 def return_string():
     return jsonify("Prueba superada")
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host = "127.0.0.1",port=3000)

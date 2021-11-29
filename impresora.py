@@ -215,21 +215,17 @@ class Principal():
 		n_fin = self.imp_date_fin.date().toPyDate()
 		self.printer.PrintZReport("A",n_ini,n_fin)
 
-	def factura(self, lista_productos, cliente, direccion, documento):
-		#Factura sin Personalizar*
-		self.printer.SendCmd(str(f"iS*{cliente}"))
-		self.printer.SendCmd(str(f"iR*{documento}"))
-		self.printer.SendCmd(str(f"i00DIRECCION: {direccion}"))
-		# self.printer.SendCmd(str("@PRODUCTOS"))
-		for producto in lista_productos:
+	def factura(self, **params):	
+		self.printer.SendCmd(str(f"i00CLIENTE: {params.get('cliente')}"))
+		self.printer.SendCmd(str(f"i01DOCUMENTO: {params.get('documento')}"))
+		self.printer.SendCmd(str(f"i02DIRECCION: {params.get('direccion')}"))
+		self.printer.SendCmd(str(f"i02TELEFONO: {params.get('telefono')}"))
+		for producto in params.get("lista_productos"):
 			print(producto)
 			self.printer.SendCmd(producto)
-		# self.printer.SendCmd(str(" 000000030000002000Tax Free/Producto Exento"))
-		# self.printer.SendCmd(str("!000000050000001000Tax Rate 1/Producto Tasa General"))
-		# self.printer.SendCmd(str('"' + "000000070000001000Tax Rate 2/ Producto Tasa Reducida"))
-		# self.printer.SendCmd(str("#000000090000001000Tax Rate 3/ Producto Tasa Adicional"))
 		self.printer.SendCmd(str("3"))
-		self.printer.SendCmd(str("102TRANSFERENCIA")) # Tipo de pago
+		self.printer.SendCmd(str("202000000021331"))
+		self.printer.SendCmd(str("210000000021331")) # Tipo de pago
 
 	def facturaper(self):
 		#Factura Personalizada
