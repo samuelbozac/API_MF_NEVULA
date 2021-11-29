@@ -23,7 +23,7 @@ def api_all():
     documento_cliente = data_cliente.get("document").get("document")
     tipo_doc = data_cliente.get("document").get("documentType")
     telefono_cliente = data_cliente.get("phone")
-    pagos = data.get("payments")
+    pagos = data.get("invoice").get("payments")
     for x in items:
         excento = x.get("exempt")
         precio = str(x.get('price'))

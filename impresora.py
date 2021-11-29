@@ -227,7 +227,7 @@ class Principal():
 			print(producto)
 			self.printer.SendCmd(producto)
 		self.printer.SendCmd(str("3"))	
-		for index, metodo in enumerate(params.get("pago")):
+		for index, metodo in enumerate(params.get("pago"), start=1):
 			p_entero, p_decimal = metodo.get("amount").split('.')
 			tipo = metodos_pago.get(metodo.get("paymentMethod"))
 			self.printer.SendCmd(str(f"20{index}{(('0') * (10 - len(p_entero))) + p_entero}{p_decimal}{tipo}")) # Tipo de pago
