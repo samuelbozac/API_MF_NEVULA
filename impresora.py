@@ -1,4 +1,5 @@
 from datetime import (timedelta, datetime as pyDateTime, date as pyDate, time as pyTime)
+from operator import index
 
 import sys
 import Tfhka
@@ -216,6 +217,8 @@ class Principal():
 		self.printer.PrintZReport("A",n_ini,n_fin)
 
 	def factura(self, **params):	
+		metodos_pago = {"TRANSFERENCE":"TRANSFERENCIA", "MOBILE PAYMENT":"PAGO MOVIL", "CASH": "EFECTIVO", "CARD":"TARJETA DEBITO",\
+			 "WALLET": "TRANSFERENCIA"}
 		self.printer.SendCmd(str(f"i00CLIENTE: {params.get('cliente')}"))
 		self.printer.SendCmd(str(f"i01DOCUMENTO: {params.get('documento')}"))
 		self.printer.SendCmd(str(f"i02DIRECCION: {params.get('direccion')}"))
@@ -223,9 +226,11 @@ class Principal():
 		for producto in params.get("lista_productos"):
 			print(producto)
 			self.printer.SendCmd(producto)
-		self.printer.SendCmd(str("3"))
-		self.printer.SendCmd(str("202000000021331"))
-		self.printer.SendCmd(str("210000000021331")) # Tipo de pago
+		self.printer.SendCmd(str("3"))	
+		for index, metodo in enumerate(params.get("pago")):
+			p_entero, p_decimal = metodo.get("amount").split('.')
+			tipo = metodos_pago.get(metodo.get("paymentMethod"))
+			self.printer.SendCmd(str(f"20{index}{(('0') * (10 - len(p_entero))) + p_entero}{p_decimal}{tipo}")) # Tipo de pago
 
 	def facturaper(self):
 		#Factura Personalizada

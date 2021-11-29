@@ -23,6 +23,7 @@ def api_all():
     documento_cliente = data_cliente.get("document").get("document")
     tipo_doc = data_cliente.get("document").get("documentType")
     telefono_cliente = data_cliente.get("phone")
+    pagos = data.get("payments")
     for x in items:
         excento = x.get("exempt")
         precio = str(x.get('price'))
@@ -37,7 +38,8 @@ def api_all():
         principal.reconocer_puerto()
         principal.abrir_puerto()
         principal.factura(lista_productos = codigos, cliente = nombre_cliente, \
-            direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente)
+            direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente,\
+                pago = pagos)
         principal.cerrar_puerto()
         principal.abrir_puerto()
         factura_n = principal.printer.N_Factura()
