@@ -1,3 +1,4 @@
+from operator import attrgetter
 import flask
 from flask import request, jsonify
 from impresora import Principal
@@ -29,17 +30,21 @@ def api_all():
         producto = x.get('name')
         codigos.append(f"{estados.get('e') if excento == True else estados.get('g')}{(('0') * (8 - len(p_entero))) + p_entero}{p_decimal + (('0') * (2 - len(p_decimal)))}\
 {(('0') * (5 - len(c_entera))) + c_entera}{c_decimal + (('0') * (3 - len(c_decimal)))}{producto}")
-    principal = Principal()
-    principal.reconocer_puerto()
-    principal.abrir_puerto()
-    principal.factura(codigos, nombre_cliente, direccion, "-".join([tipo_doc, documento]))
-    principal.cerrar_puerto()
-    principal.abrir_puerto()
-    factura_n = principal.printer.N_Factura()
-    principal.cerrar_puerto()
-    return jsonify({'factura_n':factura_n})
+    try:
+        principal = Principal()
+        principal.reconocer_puerto()
+        principal.abrir_puerto()
+        principal.factura(codigos, nombre_cliente, direccion, "-".join([tipo_doc, documento]))
+        principal.cerrar_puerto()
+        principal.abrir_puerto()
+        factura_n = principal.printer.N_Factura()
+        principal.cerrar_puerto()
+        return jsonify({'invoice_number': factura_n})
+    except AttributeError as e:
+        print(e)
+        return jsonify({"Error": "Impresora no conectada"})
 @app.route("/api/prueba", methods =['POST'])
 def return_string():
     return jsonify("Prueba superada")
 if __name__ == '__main__':
-    app.run(port=3000)
+    app.run(port=5000)
