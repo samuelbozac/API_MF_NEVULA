@@ -151,6 +151,7 @@ imports:
  &#8226;   <a href="#encodings.zlib_codec">encodings.zlib_codec</a>
  &#8226;   <a href="#enum">enum</a>
  &#8226;   <a href="#flask">flask</a>
+ &#8226;   <a href="#flask_cors">flask_cors</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#heapq">heapq</a>
  &#8226;   <a href="#impresora">impresora</a>
@@ -167,7 +168,6 @@ imports:
  &#8226;   <a href="#pyi_rth_win32comgenpy.py">pyi_rth_win32comgenpy.py</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#reprlib">reprlib</a>
- &#8226;   <a href="#serial">serial</a>
  &#8226;   <a href="#sre_compile">sre_compile</a>
  &#8226;   <a href="#sre_constants">sre_constants</a>
  &#8226;   <a href="#sre_parse">sre_parse</a>
@@ -348,7 +348,7 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>'org.python'</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#pickle">pickle</a>
+    <a href="#copy">copy</a>
  &#8226;   <a href="#setuptools.sandbox">setuptools.sandbox</a>
  &#8226;   <a href="#xml.sax">xml.sax</a>
 
@@ -4176,6 +4176,7 @@ imported by:
  &#8226;   <a href="#doctest">doctest</a>
  &#8226;   <a href="#email.feedparser">email.feedparser</a>
  &#8226;   <a href="#flask._compat">flask._compat</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
  &#8226;   <a href="#importlib_metadata">importlib_metadata</a>
@@ -4269,6 +4270,7 @@ imported by:
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
     <a href="#collections">collections</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#pkg_resources._vendor.pyparsing">pkg_resources._vendor.pyparsing</a>
  &#8226;   <a href="#pyparsing">pyparsing</a>
  &#8226;   <a href="#setuptools._vendor.pyparsing">setuptools._vendor.pyparsing</a>
@@ -4357,6 +4359,7 @@ imported by:
  &#8226;   <a href="#click._bashcomplete">click._bashcomplete</a>
  &#8226;   <a href="#configparser">configparser</a>
  &#8226;   <a href="#flask._compat">flask._compat</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#http.client">http.client</a>
  &#8226;   <a href="#inspect">inspect</a>
  &#8226;   <a href="#jinja2._compat">jinja2._compat</a>
@@ -4806,8 +4809,8 @@ imported by:
   <a target="code" href="///C:/users/samuel/anaconda3/lib/copy.py" type="text/plain"><tt>copy</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#copyreg">copyreg</a>
- &#8226;   <a href="#org">org</a>
+    <a href="#'org.python'">'org.python'</a>
+ &#8226;   <a href="#copyreg">copyreg</a>
  &#8226;   <a href="#types">types</a>
  &#8226;   <a href="#weakref">weakref</a>
 
@@ -7184,6 +7187,7 @@ imported by:
  &#8226;   <a href="#flask.json">flask.json</a>
  &#8226;   <a href="#flask.json.tag">flask.json.tag</a>
  &#8226;   <a href="#flask.sessions">flask.sessions</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#http.server">http.server</a>
  &#8226;   <a href="#impresora">impresora</a>
@@ -11073,6 +11077,9 @@ imported by:
  &#8226;   <a href="#flask.templating">flask.templating</a>
  &#8226;   <a href="#flask.testing">flask.testing</a>
  &#8226;   <a href="#flask.wrappers">flask.wrappers</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
+ &#8226;   <a href="#flask_cors.decorator">flask_cors.decorator</a>
+ &#8226;   <a href="#flask_cors.extension">flask_cors.extension</a>
  &#8226;   <a href="#prueba.py">prueba.py</a>
 
   </div>
@@ -11545,6 +11552,111 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="flask_cors"></a>
+  <a target="code" href="///C:/users/samuel/anaconda3/lib/site-packages/flask_cors/__init__.py" type="text/plain"><tt>flask_cors</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#flask_cors.decorator">flask_cors.decorator</a>
+ &#8226;   <a href="#flask_cors.extension">flask_cors.extension</a>
+ &#8226;   <a href="#flask_cors.version">flask_cors.version</a>
+ &#8226;   <a href="#logging">logging</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#flask_cors.core">flask_cors.core</a>
+ &#8226;   <a href="#flask_cors.decorator">flask_cors.decorator</a>
+ &#8226;   <a href="#flask_cors.extension">flask_cors.extension</a>
+ &#8226;   <a href="#flask_cors.version">flask_cors.version</a>
+ &#8226;   <a href="#prueba.py">prueba.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="flask_cors.core"></a>
+  <a target="code" href="///C:/users/samuel/anaconda3/lib/site-packages/flask_cors/core.py" type="text/plain"><tt>flask_cors.core</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#collections">collections</a>
+ &#8226;   <a href="#collections.Iterable">collections.Iterable</a>
+ &#8226;   <a href="#collections.abc">collections.abc</a>
+ &#8226;   <a href="#datetime">datetime</a>
+ &#8226;   <a href="#flask">flask</a>
+ &#8226;   <a href="#flask_cors">flask_cors</a>
+ &#8226;   <a href="#logging">logging</a>
+ &#8226;   <a href="#re">re</a>
+ &#8226;   <a href="#six">six</a>
+ &#8226;   <a href="#werkzeug.datastructures">werkzeug.datastructures</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#flask_cors.decorator">flask_cors.decorator</a>
+ &#8226;   <a href="#flask_cors.extension">flask_cors.extension</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="flask_cors.decorator"></a>
+  <a target="code" href="///C:/users/samuel/anaconda3/lib/site-packages/flask_cors/decorator.py" type="text/plain"><tt>flask_cors.decorator</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#flask">flask</a>
+ &#8226;   <a href="#flask_cors">flask_cors</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
+ &#8226;   <a href="#functools">functools</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#flask_cors">flask_cors</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="flask_cors.extension"></a>
+  <a target="code" href="///C:/users/samuel/anaconda3/lib/site-packages/flask_cors/extension.py" type="text/plain"><tt>flask_cors.extension</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#flask">flask</a>
+ &#8226;   <a href="#flask_cors">flask_cors</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
+ &#8226;   <a href="#urllib">urllib</a>
+ &#8226;   <a href="#urllib.parse">urllib.parse</a>
+ &#8226;   <a href="#urllib.unquote_plus">urllib.unquote_plus</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#flask_cors">flask_cors</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="flask_cors.version"></a>
+  <a target="code" href="///C:/users/samuel/anaconda3/lib/site-packages/flask_cors/version.py" type="text/plain"><tt>flask_cors.version</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#flask_cors">flask_cors</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#flask_cors">flask_cors</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="fnmatch"></a>
   <a target="code" href="///C:/users/samuel/anaconda3/lib/fnmatch.py" type="text/plain"><tt>fnmatch</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
@@ -11691,6 +11803,7 @@ imported by:
  &#8226;   <a href="#flask.ctx">flask.ctx</a>
  &#8226;   <a href="#flask.globals">flask.globals</a>
  &#8226;   <a href="#flask.helpers">flask.helpers</a>
+ &#8226;   <a href="#flask_cors.decorator">flask_cors.decorator</a>
  &#8226;   <a href="#fnmatch">fnmatch</a>
  &#8226;   <a href="#http.server">http.server</a>
  &#8226;   <a href="#importlib.metadata">importlib.metadata</a>
@@ -14077,6 +14190,8 @@ imported by:
  &#8226;   <a href="#chardet.universaldetector">chardet.universaldetector</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#flask.logging">flask.logging</a>
+ &#8226;   <a href="#flask_cors">flask_cors</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#hashlib">hashlib</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#jinja2.runtime">jinja2.runtime</a>
@@ -15511,7 +15626,7 @@ imported by:
   <a target="code" href="" type="text/plain"><tt>org</tt></a>
 <span class="moduletype">MissingModule</span>  <div class="import">
 imported by:
-    <a href="#copy">copy</a>
+    <a href="#pickle">pickle</a>
 
   </div>
 
@@ -16374,8 +16489,7 @@ imported by:
   <a target="code" href="///C:/users/samuel/anaconda3/lib/pickle.py" type="text/plain"><tt>pickle</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#'org.python'">'org.python'</a>
- &#8226;   <a href="#_compat_pickle">_compat_pickle</a>
+    <a href="#_compat_pickle">_compat_pickle</a>
  &#8226;   <a href="#_pickle">_pickle</a>
  &#8226;   <a href="#codecs">codecs</a>
  &#8226;   <a href="#copyreg">copyreg</a>
@@ -16383,6 +16497,7 @@ imports:
  &#8226;   <a href="#functools">functools</a>
  &#8226;   <a href="#io">io</a>
  &#8226;   <a href="#itertools">itertools</a>
+ &#8226;   <a href="#org">org</a>
  &#8226;   <a href="#pprint">pprint</a>
  &#8226;   <a href="#re">re</a>
  &#8226;   <a href="#struct">struct</a>
@@ -18532,6 +18647,7 @@ imported by:
  &#8226;   <a href="#email.utils">email.utils</a>
  &#8226;   <a href="#encodings.idna">encodings.idna</a>
  &#8226;   <a href="#flask.cli">flask.cli</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#fnmatch">fnmatch</a>
  &#8226;   <a href="#fractions">fractions</a>
  &#8226;   <a href="#ftplib">ftplib</a>
@@ -18965,7 +19081,6 @@ imports:
 imported by:
     <a href="#Tfhka">Tfhka</a>
  &#8226;   <a href="#impresora">impresora</a>
- &#8226;   <a href="#prueba.py">prueba.py</a>
  &#8226;   <a href="#serial.serialcli">serial.serialcli</a>
  &#8226;   <a href="#serial.serialjava">serial.serialjava</a>
  &#8226;   <a href="#serial.serialposix">serial.serialposix</a>
@@ -19322,6 +19437,7 @@ imported by:
  &#8226;   <a href="#cryptography.x509.general_name">cryptography.x509.general_name</a>
  &#8226;   <a href="#cryptography.x509.name">cryptography.x509.name</a>
  &#8226;   <a href="#cryptography.x509.ocsp">cryptography.x509.ocsp</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#numpy">numpy</a>
  &#8226;   <a href="#pathlib2">pathlib2</a>
  &#8226;   <a href="#six.moves">six.moves</a>
@@ -21440,6 +21556,7 @@ imports:
     <a href="#urllib.FancyURLopener">urllib.FancyURLopener</a>
  &#8226;   <a href="#urllib.pathname2url">urllib.pathname2url</a>
  &#8226;   <a href="#urllib.quote">urllib.quote</a>
+ &#8226;   <a href="#urllib.unquote_plus">urllib.unquote_plus</a>
  &#8226;   <a href="#urllib.urlopen">urllib.urlopen</a>
  &#8226;   <a href="#urllib.urlretrieve">urllib.urlretrieve</a>
 
@@ -21449,6 +21566,7 @@ imported by:
     <a href="#PyInstaller.lib.modulegraph._compat">PyInstaller.lib.modulegraph._compat</a>
  &#8226;   <a href="#click._termui_impl">click._termui_impl</a>
  &#8226;   <a href="#email._header_value_parser">email._header_value_parser</a>
+ &#8226;   <a href="#flask_cors.extension">flask_cors.extension</a>
  &#8226;   <a href="#jinja2._compat">jinja2._compat</a>
  &#8226;   <a href="#pathlib2">pathlib2</a>
  &#8226;   <a href="#pkg_resources._vendor.packaging.requirements">pkg_resources._vendor.packaging.requirements</a>
@@ -21517,6 +21635,7 @@ imported by:
     <a href="#_pytest.pastebin">_pytest.pastebin</a>
  &#8226;   <a href="#cgi">cgi</a>
  &#8226;   <a href="#email.utils">email.utils</a>
+ &#8226;   <a href="#flask_cors.extension">flask_cors.extension</a>
  &#8226;   <a href="#http.client">http.client</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#http.server">http.server</a>
@@ -21642,6 +21761,18 @@ imports:
 imported by:
     <a href="#urllib.error">urllib.error</a>
  &#8226;   <a href="#urllib.request">urllib.request</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="urllib.unquote_plus"></a>
+  <a target="code" href="" type="text/plain"><tt>urllib.unquote_plus</tt></a>
+<span class="moduletype">MissingModule</span>  <div class="import">
+imported by:
+    <a href="#flask_cors.extension">flask_cors.extension</a>
+ &#8226;   <a href="#urllib">urllib</a>
 
   </div>
 
@@ -22722,6 +22853,7 @@ imported by:
     <a href="#flask.app">flask.app</a>
  &#8226;   <a href="#flask.helpers">flask.helpers</a>
  &#8226;   <a href="#flask.sessions">flask.sessions</a>
+ &#8226;   <a href="#flask_cors.core">flask_cors.core</a>
  &#8226;   <a href="#werkzeug.formparser">werkzeug.formparser</a>
  &#8226;   <a href="#werkzeug.http">werkzeug.http</a>
  &#8226;   <a href="#werkzeug.routing">werkzeug.routing</a>
