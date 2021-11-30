@@ -2,16 +2,18 @@ from operator import attrgetter
 import flask
 from flask import request, jsonify
 from impresora import Principal
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 app = flask.Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config["DEBUG"] = True
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/', methods=['GET'])
 def home():
     return "<h1>Distant Reading Archive</h1><p>This site is a prototype API for distant reading of science fiction novels.</p>"
 
 @app.route('/api/factura', methods=['POST'])
+@cross_origin()
 def api_all():
     estados = {'e': ' ', 'g': '!', 'r': '"', 'a': '#'}
     codigos = []
