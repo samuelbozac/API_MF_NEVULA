@@ -47,8 +47,16 @@ def api_all():
         return jsonify({'invoice_number': factura_n})
     except AttributeError:
         return jsonify({"Error": "Impresora no conectada"})
-@app.route("/api/prueba", methods =['POST'])
-def return_string():
-    return jsonify("Prueba superada")
+@app.route("/api/imprimirx", methods =['POST', 'GET'])
+def imprimir_x():
+    principal = Principal()
+    principal.reconocer_puerto()
+    # principal.abrir_puerto()
+    # principal.imprimir_ReporteX()
+    # principal.cerrar_puerto()
+    principal.abrir_puerto()
+    data = principal.obtener_reporteX()
+    principal.cerrar_puerto()
+    return jsonify({'report_x': data})
 if __name__ == '__main__':
     app.run(host = "127.0.0.1",port=5000)

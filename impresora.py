@@ -204,7 +204,7 @@ class Principal():
 		salida+= "\nImpuesto IVA R en Nota de Credito: "+ str(reporte._reducedRateTaxDevolution)
 		salida+= "\nBI IVA A en Nota de Credito: "+ str(reporte._additionalRateDevolution)
 		salida+= "\nImpuesto IVA A en Nota de Credito: "+ str(reporte._additionalRateTaxDevolution)
-		self.txt_informacion.setText(salida)
+		print(salida)
 
 	def ImpZpornumero(self):
 		n_ini = self.imp_num_ini.value()

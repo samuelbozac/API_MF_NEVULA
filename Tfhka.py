@@ -206,7 +206,6 @@ class tf_ve_ifpython:
   def _AssembleQueryToSend(self,linea):
     lrc = self._Lrc(linea+chr(0x03))
     previo=chr(0x02)+linea+chr(0x03)+chr(lrc)
-    print(f"Previo: {previo}")
     return previo
 
   def _Lrc(self,linea):
@@ -229,7 +228,7 @@ class tf_ve_ifpython:
       linea=linea.replace('ACK',chr(0x06),1)
       linea=linea.replace('NAK',chr(0x15),1)
       linea=linea.replace('ETB',chr(0x17),1)
-
+    print(f"Linea+adic: {linea+adic}")
     return linea+adic
 
   def _States(self, cmd, n_factura = False):
@@ -262,8 +261,10 @@ class tf_ve_ifpython:
         msj=self._AssembleQueryToSend(cmd)
         self._write(msj)
         rt=self._read(1)
-        while rt==chr(0x05):
+        print(f"Rt: {rt}")
+        while rt.decode()==chr(0x05):
           rt=self._read(1)
+          print(f"Rt while: {rt}")
           if rt!=None:
             time.sleep(0.05)
             msj=self._Debug('ACK')
@@ -276,7 +277,8 @@ class tf_ve_ifpython:
             self.envio = "Error... CTS in False"
             rt=None
             self.ser.setRTS(False)
-    except serial.SerialException:
+    except serial.SerialException as e:
+      print(f"Error: {e}")
       rt=None
       return rt
 
