@@ -45,7 +45,8 @@ def api_all():
         factura_n = principal.printer.N_Factura()
         principal.cerrar_puerto()
         return jsonify({'invoice_number': factura_n})
-    except AttributeError:
+    except AttributeError as e:
+        print(f"Error: {e}")
         return jsonify({"Error": "Impresora no conectada"})
 @app.route("/api/imprimirx", methods =['POST', 'GET'])
 def imprimir_x():

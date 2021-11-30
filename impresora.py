@@ -233,7 +233,7 @@ class Principal():
 				tipo = metodos_pago.get(metodo.get("paymentMethod"))
 				self.printer.SendCmd(str(f"20{index}{(('0') * (10 - len(p_entero))) + p_entero}{p_decimal}{tipo}")) # Tipo de pago
 		else:
-			self.printer.SendCmd(str(f"101{params.get('pago').get('paymentMethod')}"))
+			self.printer.SendCmd(str(f"101{metodos_pago.get(params.get('pago')[0].get('paymentMethod'))}"))
 
 	def facturaper(self):
 		#Factura Personalizada
