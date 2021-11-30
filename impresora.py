@@ -222,7 +222,7 @@ class Principal():
 		self.printer.SendCmd(str(f"i00CLIENTE: {params.get('cliente')}"))
 		self.printer.SendCmd(str(f"i01DOCUMENTO: {params.get('documento')}"))
 		self.printer.SendCmd(str(f"i02DIRECCION: {params.get('direccion')}"))
-		self.printer.SendCmd(str(f"i02TELEFONO: {params.get('telefono')}"))
+		self.printer.SendCmd(str(f"i03TELEFONO: {params.get('telefono')}"))
 		for producto in params.get("lista_productos"):
 			print(producto)
 			self.printer.SendCmd(producto)
