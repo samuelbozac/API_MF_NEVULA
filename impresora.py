@@ -3,7 +3,6 @@ from operator import index
 
 import sys
 import Tfhka
-# import pyserial.serial as 
 import serial
 import os
 import time
@@ -226,7 +225,7 @@ class Principal():
 		for producto in params.get("lista_productos"):
 			print(producto)
 			self.printer.SendCmd(producto)
-		self.printer.SendCmd(str("3"))	
+		self.printer.SendCmd(str("3"))
 		if len(params.get("pago")) > 1:
 			for index, metodo in enumerate(params.get("pago"), start=1):
 				p_entero, p_decimal = metodo.get("amount").split('.')
@@ -234,6 +233,8 @@ class Principal():
 				self.printer.SendCmd(str(f"20{index}{(('0') * (10 - len(p_entero))) + p_entero}{p_decimal}{tipo}")) # Tipo de pago
 		else:
 			self.printer.SendCmd(str(f"101{metodos_pago.get(params.get('pago')[0].get('paymentMethod'))}"))
+		# self.printer.SendCmd(str(f"i04CAJERO: {params.get('cajero').get('seller')}"))
+		# self.printer.SendCmd(str(f"i05{params.get('cajero').get('safeBox')}"))
 
 	def facturaper(self):
 		#Factura Personalizada

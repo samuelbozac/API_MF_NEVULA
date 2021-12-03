@@ -26,6 +26,7 @@ def api_all():
     tipo_doc = data_cliente.get("document").get("documentType")
     telefono_cliente = data_cliente.get("phone")
     pagos = data.get("invoice").get("payments")
+    data_cajero = data.get("invoice").get("cashier")
     for x in items:
         excento = x.get("exempt")
         precio = str(x.get('price'))
@@ -41,7 +42,7 @@ def api_all():
         principal.abrir_puerto()
         principal.factura(lista_productos = codigos, cliente = nombre_cliente, \
             direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente,\
-                pago = pagos)
+                pago = pagos, cajero = data_cajero)
         principal.cerrar_puerto()
         principal.abrir_puerto()
         factura_n = principal.printer.N_Factura()
@@ -49,7 +50,7 @@ def api_all():
         return jsonify({'invoice_number': factura_n})
     except AttributeError as e:
         print(f"Error: {e}")
-        return jsonify({"Error": "Impresora no conectada"})
+        return jsonify({"Error": "Impresora no conectada"}), 503
 @app.route("/api/imprimirx", methods =['POST', 'GET'])
 def imprimir_x():
     principal = Principal()
