@@ -53,22 +53,30 @@ def api_all():
         return jsonify({"Error": "Impresora no conectada"}), 503
 @app.route("/api/imprimirx", methods =['POST', 'GET'])
 def imprimir_x():
-    principal = Principal()
-    principal.reconocer_puerto()
-    principal.abrir_puerto()
-    principal.imprimir_ReporteX()
-    principal.cerrar_puerto()
-    # principal.abrir_puerto()
-    # data = principal.obtener_reporteX()
-    # principal.cerrar_puerto()
-    return jsonify({'report_x': True})
-
+    try:
+        principal = Principal()
+        principal.reconocer_puerto()
+        principal.abrir_puerto()
+        principal.imprimir_ReporteX()
+        principal.cerrar_puerto()
+        # principal.abrir_puerto()
+        # data = principal.obtener_reporteX()
+        # principal.cerrar_puerto()
+        return jsonify({'report_x': True})
+    except AttributeError as e:
+        print(f"Error: {e}")
+        return jsonify({"Error": "Impresora no conectada"}), 503
 @app.route("/api/imprimirz", methods =['POST', 'GET'])
 def imprimir_z():
-    principal = Principal()
-    principal.reconocer_puerto()
-    principal.abrir_puerto()
-    principal.imprimir_ReporteZ()
-    principal.cerrar_puerto()
+    try:
+        principal = Principal()
+        principal.reconocer_puerto()
+        principal.abrir_puerto()
+        principal.imprimir_ReporteZ()
+        principal.cerrar_puerto()
+        return jsonify({"report_z":True})
+    except AttributeError as e:
+        print(f"Error: {e}")
+        return jsonify({"Error": "Impresora no conectada"}), 503
 if __name__ == '__main__':
     app.run(host = "127.0.0.1",port=5000)
