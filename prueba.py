@@ -3,6 +3,8 @@ import flask
 from flask import request, jsonify
 from impresora import Principal
 from flask_cors import CORS, cross_origin
+import time
+
 app = flask.Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config["DEBUG"] = True
@@ -15,6 +17,10 @@ def home():
 @app.route('/api/factura', methods=['POST'])
 @cross_origin()
 def api_all():
+    """Función para facturar.
+        :return: Número de factura
+        :rtype: json
+        """
     estados = {'e': ' ', 'g': '!', 'r': '"', 'a': '#'}
     codigos = []
     data = request.get_json(force= True)
@@ -40,6 +46,7 @@ def api_all():
         principal = Principal()
         principal.reconocer_puerto()
         principal.abrir_puerto()
+        factura_anterior = principal.printer.N_Factura()
         principal.factura(lista_productos = codigos, cliente = nombre_cliente, \
             direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente,\
                 pago = pagos, cajero = data_cajero)
@@ -47,7 +54,10 @@ def api_all():
         principal.abrir_puerto()
         factura_n = principal.printer.N_Factura()
         principal.cerrar_puerto()
-        return jsonify({'invoice_number': factura_n})
+        if factura_anterior != factura_n:
+            return jsonify({'invoice_number': factura_n})
+        else:
+            return jsonify({'Error': 'Error de máquina fiscal'}), 418
     except AttributeError as e:
         print(f"Error: {e}")
         return jsonify({"Error": "Impresora no conectada"}), 503
@@ -59,9 +69,18 @@ def imprimir_x():
         principal.abrir_puerto()
         principal.imprimir_ReporteX()
         principal.cerrar_puerto()
-        # principal.abrir_puerto()
-        # data = principal.obtener_reporteX()
-        # principal.cerrar_puerto()
+        return jsonify({'report_x': True})
+    except AttributeError as e:
+        print(f"Error: {e}")
+        return jsonify({"Error": "Impresora no conectada"}), 503
+@app.route("/api/obtenerx", methods =['POST', 'GET'])
+def obtener_x():
+    try:
+        principal = Principal()
+        principal.reconocer_puerto()
+        principal.abrir_puerto()
+        principal.obtener_reporteX()
+        principal.cerrar_puerto()
         return jsonify({'report_x': True})
     except AttributeError as e:
         print(f"Error: {e}")
