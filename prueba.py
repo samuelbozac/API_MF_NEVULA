@@ -97,5 +97,24 @@ def imprimir_z():
     except AttributeError as e:
         print(f"Error: {e}")
         return jsonify({"Error": "Impresora no conectada"}), 503
+# @app.route("/api/devolucion", methods =['POST'])
+# def devolucion():
+#     data = request.get_json(force= True)
+#     principal = Principal()
+@app.route("/api/reimprimir", methods = ['POST'])
+def reimprimir():
+    """Función para reimprimir una factura."""
+    data = request.get_json(force=True)
+    n_factura = data.get("invoice_number")
+    try:
+        principal = Principal()
+        principal.reconocer_puerto()
+        principal.abrir_puerto()
+        principal.ReimprimirFacturas(n_factura)
+        principal.cerrar_puerto()
+        return jsonify({"Executed": True})
+    except AttributeError as e:
+        print(f"Error: {e}")
+        return jsonify({"Error": 'No se'})
 if __name__ == '__main__':
     app.run(host = "127.0.0.1",port=5000)

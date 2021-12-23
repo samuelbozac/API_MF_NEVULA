@@ -308,9 +308,9 @@ class Principal():
 		self.printer.SendCmd(str("3"))
 		self.printer.SendCmd(str("101"))
 
-	def ReimprimirFacturas(self):
-		n_ini = self.reimp_ini.value()
-		n_fin = self.reimp_fin.value()
+	def ReimprimirFacturas(self, value):
+		n_ini = value
+		n_fin = value
 
 		starString = str(n_ini)
 		while (len(starString) < 7):
