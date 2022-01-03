@@ -116,5 +116,57 @@ def reimprimir():
     except AttributeError as e:
         print(f"Error: {e}")
         return jsonify({"Error": 'No se'})
+
+@app.route('/api/devolucion', methods=['POST'])
+@cross_origin()
+def devolucion():
+    """Función para devolucion.
+        :return: Número de devolucion
+        :rtype: json
+        """
+    estados = {'e': '0', 'g': '1', 'r': '2', 'a': '3'}
+    codigos = []
+    data = request.get_json(force= True)
+    items = data.get("invoice").get("items")
+    data_cliente = data.get("invoice").get("client")
+    nombre_cliente = f"{data_cliente.get('name')} {data_cliente.get('surname')}"
+    direccion = data_cliente.get("address")
+    documento_cliente = data_cliente.get("document").get("document")
+    tipo_doc = data_cliente.get("document").get("documentType")
+    telefono_cliente = data_cliente.get("phone")
+    pagos = data.get("invoice").get("payments")
+    data_cajero = data.get("invoice").get("cashier")
+    n_factura = data.get('invoice').get('invoiceNumber')
+    serial = data.get('invoice').get('cashier').get('serial')
+    for x in items:
+        excento = x.get("exempt")
+        precio = str(x.get('price'))
+        p_entero, p_decimal = precio.split('.')
+        cantidad = str(float(x.get('amount')))
+        c_entera, c_decimal = cantidad.split('.')
+        producto = x.get('name')
+        codigos.append(f"d{estados.get('e') if excento == True else estados.get('g')}{(('0') * (8 - len(p_entero))) + p_entero}{p_decimal + (('0') * (2 - len(p_decimal)))}\
+{(('0') * (5 - len(c_entera))) + c_entera}{c_decimal + (('0') * (3 - len(c_decimal)))}{producto}")
+    try:
+        principal = Principal()
+        principal.reconocer_puerto()
+        principal.abrir_puerto()
+        nota_anterior = principal.printer.n_nota_credito()
+        principal.notaCredito(lista_productos = codigos, cliente = nombre_cliente, \
+            direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente,\
+                pago = pagos, cajero = data_cajero, n_factura = n_factura, serial = serial)
+        principal.cerrar_puerto()
+        principal.abrir_puerto()
+        nota_n = principal.printer.n_nota_credito()
+        principal.cerrar_puerto()
+        print(nota_n)
+        if nota_anterior != nota_n:
+            return jsonify({'invoice_number': nota_n})
+        else:
+            return jsonify({'Error': 'Error de máquina fiscal'}), 418
+    except AttributeError as e:
+        print(f"Error: {e}")
+        return jsonify({"Error": "Impresora no conectada"}), 503
+
 if __name__ == '__main__':
     app.run(host = "127.0.0.1",port=5000)

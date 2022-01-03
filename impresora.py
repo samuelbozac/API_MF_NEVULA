@@ -1,4 +1,4 @@
-from datetime import (timedelta, datetime as pyDateTime, date as pyDate, time as pyTime)
+from datetime import (timedelta, datetime as dt, date as pyDate, time as pyTime)
 from operator import index
 
 import sys
@@ -11,9 +11,6 @@ class Principal():
 
 	def __init__(self):
 		self.printer = Tfhka.Tfhka()
-		self.factura = self.factura
-		self.abrir_puerto = self.abrir_puerto
-		self.reconocer_puerto = self.reconocer_puerto
 		self.puerto = ['COM3']
 	
 	def abrir_puerto(self):
@@ -222,6 +219,8 @@ class Principal():
 		self.printer.SendCmd(str(f"i01DOCUMENTO: {params.get('documento')}"))
 		self.printer.SendCmd(str(f"i02DIRECCION: {params.get('direccion')}"))
 		self.printer.SendCmd(str(f"i03TELEFONO: {params.get('telefono')}"))
+		self.printer.SendCmd(str(f"i04CAJERO: {params.get('cajero').get('seller')}"))
+		self.printer.SendCmd(str(f"i05{params.get('cajero').get('safeBox')}"))
 		for producto in params.get("lista_productos"):
 			print(producto)
 			self.printer.SendCmd(producto)
@@ -233,8 +232,6 @@ class Principal():
 				self.printer.SendCmd(str(f"20{index}{(('0') * (10 - len(p_entero))) + p_entero}{p_decimal}{tipo}")) # Tipo de pago
 		else:
 			self.printer.SendCmd(str(f"101{metodos_pago.get(params.get('pago')[0].get('paymentMethod'))}"))
-		# self.printer.SendCmd(str(f"i04CAJERO: {params.get('cajero').get('seller')}"))
-		# self.printer.SendCmd(str(f"i05{params.get('cajero').get('safeBox')}"))
 
 	def facturaper(self):
 		#Factura Personalizada
@@ -273,23 +270,28 @@ class Principal():
 		self.printer.SendCmd(str("80*Es bastante util y versatil"))
 		self.printer.SendCmd(str("810Fin del Documento no Fiscal"))
 
-	def notaCredito(self):
+	def notaCredito(self, **params):
+		metodos_pago = {"TRANSFERENCE":"TRANSFERENCIA", "MOBILE PAYMENT":"PAGO MOVIL", "CASH": "EFECTIVO", "CARD":"TARJETA DEBITO",\
+				"WALLET": "TRANSFERENCIA"}
 		#Nota de Credito
-		self.printer.SendCmd(str("iR*21.122.012"))
-		self.printer.SendCmd(str("iS*Pedro Perez"))
-		self.printer.SendCmd(str("iF*00000000001"))
-		self.printer.SendCmd(str("iD*22/08/2016"))
-		self.printer.SendCmd(str("iI*Z1F1234567"))
-		self.printer.SendCmd(str("i00Direccion: Ppal Siempre Viva"))
-		self.printer.SendCmd(str("i01Telefono: +58(212)555-55-55"))
-		self.printer.SendCmd(str("i02CAJERO: 00001"))
-		self.printer.SendCmd(str("ACOMENTARIO NOTA DE CREDITO"))
-		self.printer.SendCmd(str("d0000000030000001000Tax Free/Producto Exento"))
-		self.printer.SendCmd(str("d1000000050000001000Tax Rate 1/Producto Tasa General"))
-		self.printer.SendCmd(str("d2000000070000001000Tax Rate 2/ Producto Tasa Reducida"))
-		self.printer.SendCmd(str("d3000000090000001000Tax Rate 3/ Producto Tasa Adicional"))
-		self.printer.SendCmd(str("3"))
-		self.printer.SendCmd(str("101"))
+		self.printer.SendCmd(f"iR*{params.get('documento')}")
+		self.printer.SendCmd(f"iS*{params.get('cliente')}")
+		self.printer.SendCmd(f"i00TELEFONO: {params.get('telefono')}")
+		self.printer.SendCmd(f"i02DIRECCION: {params.get('direccion')}")
+		self.printer.SendCmd(f"iF*{params.get('n_factura')}")
+		self.printer.SendCmd(f"iD*{dt.now().strftime('%d/%m/%y')}")
+		self.printer.SendCmd(f"iI*{params.get('serial')}")
+		for producto in params.get("lista_productos"):
+			print(producto)
+			self.printer.SendCmd(producto)
+		self.printer.SendCmd("3")
+		if len(params.get("pago")) > 1:
+			for index, metodo in enumerate(params.get("pago"), start=1):
+				p_entero, p_decimal = metodo.get("amount").split('.')
+				tipo = metodos_pago.get(metodo.get("paymentMethod"))
+				self.printer.SendCmd(str(f"20{index}{(('0') * (10 - len(p_entero))) + p_entero}{p_decimal}{tipo}")) # Tipo de pago
+		else:
+			self.printer.SendCmd(str(f"101{metodos_pago.get(params.get('pago')[0].get('paymentMethod'))}"))
 
 	def notaDebito(self):
 		self.printer.SendCmd(str("iR*21.122.012"))
@@ -328,14 +330,14 @@ class Principal():
 		Enc = "Lista de Reportes\n"+"\n"
 		salida = ""
 		for NR in range(CR):
-			salida+= "Numero de Reporte Z: "+ str(reportes[NR]._numberOfLastZReport) 
-			salida+= "\nFecha Ultimo Reporte Z: "+ str(reportes[NR]._zReportDate) 
-			salida+= "\nHora Ultimo Reporte Z: "+ str(reportes[NR]._zReportTime) 
-			salida+= "\nNumero Ultima Factura: "+ str(reportes[NR]._numberOfLastInvoice) 
-			salida+= "\nFecha Ultima Factura: "+ str(reportes[NR]._lastInvoiceDate) 
+			salida+= "Numero de Reporte Z: "+ str(reportes[NR]._numberOfLastZReport)
+			salida+= "\nFecha Ultimo Reporte Z: "+ str(reportes[NR]._zReportDate)
+			salida+= "\nHora Ultimo Reporte Z: "+ str(reportes[NR]._zReportTime)
+			salida+= "\nNumero Ultima Factura: "+ str(reportes[NR]._numberOfLastInvoice)
+			salida+= "\nFecha Ultima Factura: "+ str(reportes[NR]._lastInvoiceDate)
 			salida+= "\nHora Ultima Factura: "+ str(reportes[NR]._lastInvoiceTime)
 			salida+= "\nNumero Ultima Nota de Credito: "+ str(reportes[NR]._numberOfLastCreditNote)
-			salida+= "\nNumero Ultima Nota de Debito: "+ str(reportes[NR]._numberOfLastDebitNote)			
+			salida+= "\nNumero Ultima Nota de Debito: "+ str(reportes[NR]._numberOfLastDebitNote)
 			salida+= "\nNumero Ultimo Doc No Fiscal: "+ str(reportes[NR]._numberOfLastNonFiscal)
 			salida+= "\nVentas Exento: "+ str(reportes[NR]._freeSalesTax)
 			salida+= "\nBase Imponible Ventas IVA G: "+ str(reportes[NR]._generalRate1Sale)

@@ -132,7 +132,7 @@ class tf_ve_ifpython:
          rt=False
       return rt
 
-  def _FetchRow(self, n_factura = False):
+  def _FetchRow(self, force = False):
     while True:
       time.sleep(1)
       bytes = self.ser.inWaiting()
@@ -149,7 +149,7 @@ class tf_ve_ifpython:
           self.ser.flushInput()
           self.ser.flushOutput()
           return msj
-        elif n_factura:
+        elif force:
           return linea
         else:
           break
@@ -231,11 +231,11 @@ class tf_ve_ifpython:
     print(f"Linea+adic: {linea+adic}")
     return linea+adic
 
-  def _States(self, cmd, n_factura = False):
+  def _States(self, cmd, force = False):
     #print( cmd)
     print(f"QueryCmd: {self._QueryCmd(cmd)}")
     while True:
-      trama=self._FetchRow(n_factura=n_factura)
+      trama=self._FetchRow(force=force)
       #print( "La trama es", trama, "hasta aca")
       if trama==None:
         break
@@ -445,11 +445,17 @@ class tf_ve_ifpython:
 
 
 class Tfhka(tf_ve_ifpython):
-  def N_Factura(self):
-    self.trama=self._States("S1", n_factura=True)
+  def n_factura(self):
+    self.trama=self._States("S1", force=True)
     print(self.trama)
     n_factura = self.trama.decode()
     return n_factura.split("\n")[2]
+
+  def n_nota_credito(self):
+    self.trama=self._States("S1", force=True)
+    print(self.trama)
+    n_factura = self.trama.decode()
+    return n_factura.split("\n")[6]
     
   def GetS1PrinterData(self):
     self.trama=self._States("S1")
