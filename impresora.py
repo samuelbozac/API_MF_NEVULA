@@ -311,15 +311,18 @@ class Principal():
 		self.printer.SendCmd(str("101"))
 
 	def ReimprimirFacturas(self, value):
+		value = value[1:]
 		n_ini = value
 		n_fin = value
 
 		starString = str(n_ini)
 		while (len(starString) < 7):
 			starString = "0" + starString
+		print(f"StartString: {starString}")
 		endString = str(n_fin)
 		while (len(endString) < 7):
 			endString = "0" + endString
+		print(f"EndString: {endString}")
 		self.printer.SendCmd("RF" + starString + endString)
 
 	def ObtZpornumero(self):
