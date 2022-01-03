@@ -46,13 +46,13 @@ def api_all():
         principal = Principal()
         principal.reconocer_puerto()
         principal.abrir_puerto()
-        factura_anterior = principal.printer.N_Factura()
+        factura_anterior = principal.printer.n_factura()
         principal.factura(lista_productos = codigos, cliente = nombre_cliente, \
             direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente,\
                 pago = pagos, cajero = data_cajero)
         principal.cerrar_puerto()
         principal.abrir_puerto()
-        factura_n = principal.printer.N_Factura()
+        factura_n = principal.printer.n_factura()
         principal.cerrar_puerto()
         if factura_anterior != factura_n:
             return jsonify({'invoice_number': factura_n})
