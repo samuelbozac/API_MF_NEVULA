@@ -170,37 +170,7 @@ class Principal():
 
 	def obtener_reporteX(self):
 		reporte = self.printer.GetXReport()
-		salida= "Numero Proximo Reporte Z: "+ str(reporte._numberOfLastZReport) 
-		salida+= "\nFecha Ultimo Reporte Z: "+ str(reporte._zReportDate) 
-		salida+= "\nHora Ultimo Reporte Z: "+ str(reporte._zReportTime) 
-		salida+= "\nNumero Ultima Factura: "+ str(reporte._numberOfLastInvoice) 
-		salida+= "\nFecha Ultima Factura: "+ str(reporte._lastInvoiceDate) 
-		salida+= "\nHora Ultima Factura: "+ str(reporte._lastInvoiceTime)
-		salida+= "\nNumero Ultima Nota de Debito: "+ str(reporte._numberOfLastDebitNote)
-		salida+= "\nNumero Ultima Nota de Credito: "+ str(reporte._numberOfLastCreditNote)
-		salida+= "\nNumero Ultimo Doc No Fiscal: "+ str(reporte._numberOfLastNonFiscal)
-		salida+= "\nVentas Exento: "+ str(reporte._freeSalesTax)
-		salida+= "\nBase Imponible Ventas IVA G: "+ str(reporte._generalRate1Sale)
-		salida+= "\nImpuesto IVA G: "+ str(reporte._generalRate1Tax)
-		salida+= "\nBase Imponible Ventas IVA R: "+ str(reporte._reducedRate2Sale)
-		salida+= "\nImpuesto IVA R: "+ str(reporte._reducedRate2Tax)
-		salida+= "\nBase Imponible Ventas IVA A: "+ str(reporte._additionalRate3Sal)
-		salida+= "\nImpuesto IVA A: "+ str(reporte._additionalRate3Tax)
-		salida+= "\nNota de Debito Exento: "+ str(reporte._freeTaxDebit)
-		salida+= "\nBI IVA G en Nota de Debito: "+ str(reporte._generalRateDebit)
-		salida+= "\nImpuesto IVA G en Nota de Debito: "+ str(reporte._generalRateTaxDebit)
-		salida+= "\nBI IVA R en Nota de Debito: "+ str(reporte._reducedRateDebit)
-		salida+= "\nImpuesto IVA R en Nota de Debito: "+ str(reporte._reducedRateTaxDebit)
-		salida+= "\nBI IVA A en Nota de Debito: "+ str(reporte._additionalRateDebit)
-		salida+= "\nImpuesto IVA A en Nota de Debito: "+ str(reporte._additionalRateTaxDebit)
-		salida+= "\nNota de Credito Exento: "+ str(reporte._freeTaxDevolution)
-		salida+= "\nBI IVA G en Nota de Credito: "+ str(reporte._generalRateDevolution)
-		salida+= "\nImpuesto IVA G en Nota de Credito: "+ str(reporte._generalRateTaxDevolution)
-		salida+= "\nBI IVA R en Nota de Credito: "+ str(reporte._reducedRateDevolution)
-		salida+= "\nImpuesto IVA R en Nota de Credito: "+ str(reporte._reducedRateTaxDevolution)
-		salida+= "\nBI IVA A en Nota de Credito: "+ str(reporte._additionalRateDevolution)
-		salida+= "\nImpuesto IVA A en Nota de Credito: "+ str(reporte._additionalRateTaxDevolution)
-		print(salida)
+		return reporte
 
 	def ImpZpornumero(self):
 		n_ini = self.imp_num_ini.value()
@@ -222,7 +192,6 @@ class Principal():
 		self.printer.SendCmd(str(f"i04CAJERO: {params.get('cajero').get('seller')}"))
 		self.printer.SendCmd(str(f"i05{params.get('cajero').get('safeBox')}"))
 		for producto in params.get("lista_productos"):
-			print(producto)
 			self.printer.SendCmd(producto)
 		self.printer.SendCmd(str("3"))
 		if len(params.get("pago")) > 1:
@@ -282,7 +251,6 @@ class Principal():
 		self.printer.SendCmd(f"iD*{dt.now().strftime('%d/%m/%y')}")
 		self.printer.SendCmd(f"iI*{params.get('serial')}")
 		for producto in params.get("lista_productos"):
-			print(producto)
 			self.printer.SendCmd(producto)
 		self.printer.SendCmd("3")
 		if len(params.get("pago")) > 1:
@@ -318,11 +286,9 @@ class Principal():
 		starString = str(n_ini)
 		while (len(starString) < 7):
 			starString = "0" + starString
-		print(f"StartString: {starString}")
 		endString = str(n_fin)
 		while (len(endString) < 7):
 			endString = "0" + endString
-		print(f"EndString: {endString}")
 		self.printer.SendCmd("RF" + starString + endString)
 
 	def ObtZpornumero(self):

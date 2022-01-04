@@ -1,4 +1,6 @@
 # -*- coding: iso-8859-1 -*-
+from datetime import datetime as dt
+import re
 from functools import reduce
 from ReportData import ReportData
 from S1PrinterData import S1PrinterData
@@ -270,7 +272,7 @@ class tf_ve_ifpython:
             msj=self._Debug('ACK')
             self._write(msj)
             time.sleep(0.05)
-            msj=self._FetchRow()
+            msj=self._FetchRow(force=True)
             return msj
           else:
             self._GetStatusError(0, 128);
@@ -445,6 +447,12 @@ class tf_ve_ifpython:
 
 
 class Tfhka(tf_ve_ifpython):
+  def arreglar_decimal(self, string):
+    regex = r'^0+'
+    string = re.sub(pattern= regex, string = string, repl='')
+    decimal = string[-2:]
+    entero = string[:-2]
+    return float('.'.join([entero, decimal]))
   def n_factura(self):
     self.trama=self._States("S1", force=True)
     print(self.trama)
@@ -513,9 +521,27 @@ class Tfhka(tf_ve_ifpython):
     return self.S8PPrinterData
   
   def GetXReport(self):
-    self.trama=self._UploadDataReport("U0X")
-    # print( self.trama)
-    self.XReport=ReportData(self.trama)
+    self.trama=self._UploadDataReport("U0X").decode().split('\n')
+    sale_amount = sum([self.arreglar_decimal(amount) for amount in self.trama[9:12]])
+    credit_note_amount = sum([self.arreglar_decimal(amount) for amount in self.trama[23:27]])
+    total_amount = sale_amount - credit_note_amount
+    id = str(int(self.trama[8]) + 1)
+    self.XReport = {
+	"report": {
+            "reportNumber": ('0' * (8 - len(id))) + id,
+          		"type": "X",
+          		"date": dt.now().isoformat(),
+          		"sale": {
+                            "quantity": "No c",
+                 			"amount": str(sale_amount)
+                        },
+            "creditNote": {
+                            "quantity": "Tampoco c",
+                 			"amount": str(credit_note_amount)
+                        },
+            "totalAmount": str(total_amount)
+	}
+    }
     return self.XReport
 
   def GetX2Report(self):

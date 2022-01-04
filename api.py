@@ -67,9 +67,12 @@ def imprimir_x():
         principal = Principal()
         principal.reconocer_puerto()
         principal.abrir_puerto()
+        reporte = principal.obtener_reporteX()
+        principal.cerrar_puerto()
+        principal.abrir_puerto()
         principal.imprimir_ReporteX()
         principal.cerrar_puerto()
-        return jsonify({'report_x': True})
+        return jsonify(reporte)
     except AttributeError as e:
         print(f"Error: {e}")
         return jsonify({"Error": "Impresora no conectada"}), 503
