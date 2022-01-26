@@ -184,7 +184,7 @@ class Principal():
 
 	def factura(self, **params):	
 		metodos_pago = {"TRANSFERENCE":"TRANSFERENCIA", "MOBILE PAYMENT":"PAGO MOVIL", "CASH": "EFECTIVO", "CARD":"TARJETA DEBITO",\
-			 "WALLET": "TRANSFERENCIA"}
+			 "WALLET": "TRANSFERENCIA", "CREDIT": "CREDITO"}
 		self.printer.SendCmd(str(f"i00CLIENTE: {params.get('cliente')}"))
 		self.printer.SendCmd(str(f"i01DOCUMENTO: {params.get('documento')}"))
 		self.printer.SendCmd(str(f"i02DIRECCION: {params.get('direccion')}"))
