@@ -450,8 +450,9 @@ class Tfhka(tf_ve_ifpython):
   def arreglar_decimal(self, string):
     regex = r'^0+'
     string = re.sub(pattern= regex, string = string, repl='')
-    decimal = string[-2:]
-    entero = string[:-2]
+    print(f"Print 2: {string}")
+    decimal = string[-2:] if string != '' else '0'
+    entero = string[:-2] if string != '' else '0'
     return float('.'.join([entero, decimal]))
   def n_factura(self):
     self.trama=self._States("S1", force=True)
@@ -522,6 +523,7 @@ class Tfhka(tf_ve_ifpython):
   
   def GetXReport(self):
     self.trama=self._UploadDataReport("U0X").decode().split('\n')
+    print(f'Print 1: {self.trama[9:12]}')
     sale_amount = sum([self.arreglar_decimal(amount) for amount in self.trama[9:12]])
     credit_note_amount = sum([self.arreglar_decimal(amount) for amount in self.trama[23:27]])
     total_amount = sale_amount - credit_note_amount

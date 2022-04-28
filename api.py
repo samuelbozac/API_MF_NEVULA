@@ -9,6 +9,7 @@ app = flask.Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config["DEBUG"] = True
 app.config['CORS_HEADERS'] = 'Content-Type'
+configuracion = True
 
 @app.route('/', methods=['GET'])
 def home():
@@ -21,6 +22,7 @@ def api_all():
         :return: Número de factura
         :rtype: json
         """
+    global configuracion
     estados = {'e': ' ', 'g': '!', 'r': '"', 'a': '#'}
     codigos = []
     data = request.get_json(force= True)
@@ -47,6 +49,9 @@ def api_all():
         principal.reconocer_puerto()
         principal.abrir_puerto()
         factura_anterior = principal.printer.n_factura()
+        if configuracion:
+            principal.printer.SendCmd('PJ2100')
+            configuracion = False
         principal.factura(lista_productos = codigos, cliente = nombre_cliente, \
             direccion = direccion, documento = "-".join([tipo_doc, documento_cliente]), telefono = telefono_cliente,\
                 pago = pagos, cajero = data_cajero)
@@ -57,6 +62,7 @@ def api_all():
         if factura_anterior != factura_n:
             return jsonify({'invoice_number': factura_n})
         else:
+            print(f"Es esta mierda: {factura_n}")
             return jsonify({'Error': 'Error de máquina fiscal'}), 418
     except AttributeError as e:
         print(f"Error: {e}")

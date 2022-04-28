@@ -23,7 +23,7 @@ class Principal():
 			print("Impresora no Conectada o Error Accediendo al Puerto")
 	
 	def reconocer_puerto(self):
-		for opciones in ['COM11', 'COM10','COM9', 'COM8', 'COM7', 'COM6', 'COM5', 'COM4', 'COM3']:
+		for opciones in ['COM12', 'COM11', 'COM10','COM9', 'COM8', 'COM7', 'COM6', 'COM5', 'COM4', 'COM3']:
 			try:
 				resp = self.printer.OpenFpctrl(opciones)
 				if resp:
